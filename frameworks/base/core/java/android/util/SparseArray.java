@@ -31,6 +31,7 @@ public class SparseArray<E> {
      * Creates a new SparseArray containing no mappings.
      */
     public SparseArray() {
+        /** 默认初始化大小为10 **/
         this(10);
     }
 
@@ -42,6 +43,7 @@ public class SparseArray<E> {
     public SparseArray(int initialCapacity) {
         initialCapacity = ArrayUtils.idealIntArraySize(initialCapacity);
 
+        /** 两个数组，一个是存储key的int数组，一个是存储value的数组 **/
         mKeys = new int[initialCapacity];
         mValues = new Object[initialCapacity];
         mSize = 0;
@@ -60,6 +62,7 @@ public class SparseArray<E> {
      * if no such mapping has been made.
      */
     public E get(int key, E valueIfKeyNotFound) {
+        /** 查找下标，根据下标获取value **/
         int i = binarySearch(mKeys, 0, mSize, key);
 
         if (i < 0 || mValues[i] == DELETED) {
@@ -73,8 +76,10 @@ public class SparseArray<E> {
      * Removes the mapping from the specified key, if there was any.
      */
     public void delete(int key) {
+        /** 查找下标，根据下标获取value **/
         int i = binarySearch(mKeys, 0, mSize, key);
 
+        /** 找到了就设置为DELETE,并设置mGarbage为true，这里并没有清除掉key值，下次put的时候回进行回收清理 **/
         if (i >= 0) {
             if (mValues[i] != DELETED) {
                 mValues[i] = DELETED;
@@ -100,7 +105,7 @@ public class SparseArray<E> {
             mGarbage = true;
         }
     }
-    
+
     private void gc() {
         // Log.e("SparseArray", "gc start with " + mSize);
 
@@ -134,26 +139,35 @@ public class SparseArray<E> {
      * was one.
      */
     public void put(int key, E value) {
+        /** 二分查找 **/
         int i = binarySearch(mKeys, 0, mSize, key);
 
+        /** 已经存在对应的Key值 **/
         if (i >= 0) {
             mValues[i] = value;
         } else {
+            /** 没有对应的key值存在，前面二分查找返回的是一个负值，转成正值 **/
             i = ~i;
 
+
+            //如果key对应的index小于当前数组的大小，并且该index对应的value已经标记为DELETE了，则直接将key-value保存在数组的index位置
             if (i < mSize && mValues[i] == DELETED) {
                 mKeys[i] = key;
                 mValues[i] = value;
                 return;
             }
 
+            /** 如果需要垃圾回收，并且当前数组大小大于key数组的大小时，将DELETE对象占用的位置回收 **/
             if (mGarbage && mSize >= mKeys.length) {
+                /** 删除掉value值为DELETE的key-value **/
                 gc();
 
                 // Search again because indices may have changed.
+                /** 重新查找key对应的index值，因为元素的位置在回收DELETE对象的时候，可能已经发生了变化 **/
                 i = ~binarySearch(mKeys, 0, mSize, key);
             }
 
+            /** 当元素个数大于等于当前数组长度时，进行扩容操作 **/
             if (mSize >= mKeys.length) {
                 int n = ArrayUtils.idealIntArraySize(mSize + 1);
 
@@ -168,12 +182,14 @@ public class SparseArray<E> {
                 mValues = nvalues;
             }
 
+            /** 为插入的元素腾个地方,新加的键值对是从中间插入的 **/
             if (mSize - i != 0) {
                 // Log.e("SparseArray", "move " + (mSize - i));
                 System.arraycopy(mKeys, i, mKeys, i + 1, mSize - i);
                 System.arraycopy(mValues, i, mValues, i + 1, mSize - i);
             }
 
+            /** 设置key-value **/
             mKeys[i] = key;
             mValues[i] = value;
             mSize++;
@@ -195,7 +211,7 @@ public class SparseArray<E> {
     /**
      * Given an index in the range <code>0...size()-1</code>, returns
      * the key from the <code>index</code>th key-value mapping that this
-     * SparseArray stores.  
+     * SparseArray stores.
      */
     public int keyAt(int index) {
         if (mGarbage) {
@@ -204,11 +220,11 @@ public class SparseArray<E> {
 
         return mKeys[index];
     }
-    
+
     /**
      * Given an index in the range <code>0...size()-1</code>, returns
      * the value from the <code>index</code>th key-value mapping that this
-     * SparseArray stores.  
+     * SparseArray stores.
      */
     public E valueAt(int index) {
         if (mGarbage) {
@@ -221,7 +237,7 @@ public class SparseArray<E> {
     /**
      * Given an index in the range <code>0...size()-1</code>, sets a new
      * value for the <code>index</code>th key-value mapping that this
-     * SparseArray stores.  
+     * SparseArray stores.
      */
     public void setValueAt(int index, E value) {
         if (mGarbage) {
@@ -230,7 +246,7 @@ public class SparseArray<E> {
 
         mValues[index] = value;
     }
-    
+
     /**
      * Returns the index for which {@link #keyAt} would return the
      * specified key, or a negative number if the specified
@@ -312,7 +328,7 @@ public class SparseArray<E> {
         mValues[pos] = value;
         mSize = pos + 1;
     }
-    
+
     private static int binarySearch(int[] a, int start, int len, int key) {
         int high = start + len, low = start - 1, guess;
 
