@@ -298,6 +298,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Cloneable, Seria
      *         if no mapping for the specified key is found.
      */
     public V get(Object key) {
+        /** 空键做特殊处理的*/
         if (key == null) {
             HashMapEntry<K, V> e = entryForNullKey;
             return e == null ? null : e.value;
@@ -309,8 +310,8 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Cloneable, Seria
         hash ^= (hash >>> 7) ^ (hash >>> 4);
 
         HashMapEntry<K, V>[] tab = table;
-        for (HashMapEntry<K, V> e = tab[hash & (tab.length - 1)];
-                e != null; e = e.next) {
+        /** 根据hash值，获取数组下表得到一个链表，然后遍历根据键值的hash或者equals获取value*/
+        for (HashMapEntry<K, V> e = tab[hash & (tab.length - 1)]; e != null; e = e.next) {
             K eKey = e.key;
             if (eKey == key || (e.hash == hash && key.equals(eKey))) {
                 return e.value;
@@ -392,14 +393,18 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Cloneable, Seria
      *         {@code null} if there was no such mapping.
      */
     @Override public V put(K key, V value) {
+        /** 这里键值为空的case做特殊处理 **/
         if (key == null) {
             return putValueForNullKey(value);
         }
 
         int hash = secondaryHash(key.hashCode());
         HashMapEntry<K, V>[] tab = table;
+        /** 获取下标，通过获取的方式也可看出来，长度是2的n次幂是为了更快 **/
         int index = hash & (tab.length - 1);
+        /** 获取到链表，看看这个key值存不存在，如果存在就替换，返回旧值*/
         for (HashMapEntry<K, V> e = tab[index]; e != null; e = e.next) {
+            /** 这里判断的依据是has相等切key得equal相等*/
             if (e.hash == hash && key.equals(e.key)) {
                 preModify(e);
                 V oldValue = e.value;
@@ -410,8 +415,11 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Cloneable, Seria
 
         // No entry for (non-null) key is present; create one
         modCount++;
+        /** 这里判断进行扩容，threshold默认为-1，所以这里第一次就会扩容*/
         if (size++ > threshold) {
+            /** 成倍扩容*/
             tab = doubleCapacity();
+            /** 重新计算一下index*/
             index = hash & (tab.length - 1);
         }
         addNewEntry(key, value, hash, index);
@@ -419,13 +427,16 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Cloneable, Seria
     }
 
     private V putValueForNullKey(V value) {
+        /** 可见键值为空的情况，故意使用了一个属性来存储*/
         HashMapEntry<K, V> entry = entryForNullKey;
         if (entry == null) {
+            /** 真正的来添加key为空的情况，addNewEntryForNUllKEY什么都没有干，就是创建了一个实例，设置属性的值*/
             addNewEntryForNullKey(value);
             size++;
             modCount++;
             return null;
         } else {
+            /** 替换返回旧的值*/
             preModify(entry);
             V oldValue = entry.value;
             entry.value = value;
@@ -482,6 +493,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Cloneable, Seria
      * must incorporate the secondary hash function.
      */
     void addNewEntry(K key, V value, int hash, int index) {
+        /** 这里也没也没有做啥，就是直接new一个HashMapEntry对象放在链表头部，采用头部插入法*/
         table[index] = new HashMapEntry<K, V>(key, value, hash, table[index]);
     }
 
@@ -491,6 +503,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Cloneable, Seria
      * (and indirectly, putAll), and overridden by LinkedHashMap.
      */
     void addNewEntryForNullKey(V value) {
+        /** 键值为空的时候特殊处理一下*/
         entryForNullKey = new HashMapEntry<K, V>(null, value, 0, null);
     }
 
@@ -632,6 +645,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Cloneable, Seria
         int index = hash & (tab.length - 1);
         for (HashMapEntry<K, V> e = tab[index], prev = null;
                 e != null; prev = e, e = e.next) {
+            /** 找到就把这个节点给删掉*/
             if (e.hash == hash && key.equals(e.key)) {
                 if (prev == null) {
                     tab[index] = e.next;
