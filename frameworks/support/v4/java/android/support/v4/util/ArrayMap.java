@@ -44,6 +44,9 @@ import java.util.Set;
  * item, it may reduce the capacity to better match the current size.  In the future an
  * explicit call to set the capacity should turn off this aggressive shrinking behavior.</p>
  */
+/**
+ 纯数组的形式存储，不过不同的是他的一个数组存储的是Hash值另一个数组存储的是key和value，其中key和value是成对出现的，key存储在数组的偶数位上，value存储在数组的奇数位上
+ **/
 public final class ArrayMap<K, V> implements Map<K, V> {
     private static final boolean DEBUG = false;
     private static final String TAG = "ArrayMap";
@@ -86,26 +89,32 @@ public final class ArrayMap<K, V> implements Map<K, V> {
     int mSize;
     MapCollections<K, V> mCollections;
 
+    /** 找找hash应该存放的位置，小于等于0就是没有找到，大于零就是找到了 **/
     int indexOf(Object key, int hash) {
         final int N = mSize;
 
         // Important fast case: if nothing is in here, nothing to look for.
+        /** 如果当前没有数据就不用再查找了，直接返回结果 **/
         if (N == 0) {
             return ~0;
         }
 
+        /** 进行二分查找 **/
         int index = ContainerHelpers.binarySearch(mHashes, N, hash);
 
         // If the hash code wasn't found, then we have no entry for this key.
+        /** 没有找到就返回负数 **/
         if (index < 0) {
             return index;
         }
 
         // If the key at the returned index matches, that's what we want.
+        /** 判断是否是同一个key **/
         if (key.equals(mArray[index<<1])) {
             return index;
         }
 
+        /** 下面两个循环是为了找前后key值有没有相等的（equals） **/
         // Search for a matching key after the index.
         int end;
         for (end = index + 1; end < N && mHashes[end] == hash; end++) {
@@ -237,6 +246,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
      * will grow once items are added to it.
      */
     public ArrayMap() {
+        /** 默认构造参数，这里会创建空的数组 **/
         this(0, false);
     }
 
@@ -443,10 +453,13 @@ public final class ArrayMap<K, V> implements Map<K, V> {
             index = indexOfNull();
         } else {
             hash = mIdentityHashCode ? System.identityHashCode(key) : key.hashCode();
+            /** 获取下标 **/
             index = indexOf(key, hash);
         }
 
+        /** 找到了就进行替换，返回旧值 **/
         if (index >= 0) {
+            /** 键值是放在mArray里面的，偶数为key，奇数为value **/
             index = (index<<1) + 1;
             final V old = (V)mArray[index];
             mArray[index] = value;
@@ -454,6 +467,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
         }
 
         index = ~index;
+        /** 需要进行扩容 **/
         if (mSize >= mHashes.length) {
             final int n = mSize >= (BASE_SIZE*2) ? (mSize+(mSize>>1))
                     : (mSize >= BASE_SIZE ? (BASE_SIZE*2) : BASE_SIZE);
@@ -473,6 +487,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
             freeArrays(ohashes, oarray, mSize);
         }
 
+        /** 挪个位置，给新插入的key-value让位 **/
         if (index < mSize) {
             if (DEBUG) Log.d(TAG, "put: move " + index + "-" + (mSize-index)
                     + " to " + (index+1));
@@ -480,6 +495,7 @@ public final class ArrayMap<K, V> implements Map<K, V> {
             System.arraycopy(mArray, index << 1, mArray, (index + 1) << 1, (mSize - index) << 1);
         }
 
+        /** 设置key-value,hash值 **/
         mHashes[index] = hash;
         mArray[index<<1] = key;
         mArray[(index<<1)+1] = value;
