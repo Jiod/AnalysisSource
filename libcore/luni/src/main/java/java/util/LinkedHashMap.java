@@ -49,6 +49,8 @@ package java.util;
  * elements during iteration. It is not possible to guarantee that this
  * mechanism works in all cases of unsynchronized concurrent modification. It
  * should only be used for debugging purposes.
+ *
+ * LinkedHashMap保存了元素插入或获取的顺序，在新增元素或者获取元素时修改链表，实现元素的排序
  */
 public class LinkedHashMap<K, V> extends HashMap<K, V> {
 
@@ -61,6 +63,7 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
 
     /**
      * True if access ordered, false if insertion ordered.
+     * 保存排序的方式(访问/插入)
      */
     private final boolean accessOrder;
 
@@ -70,6 +73,7 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
     public LinkedHashMap() {
         super();
         init();
+        /** 默认使用插入的顺序*/
         accessOrder = false;
     }
 
@@ -143,6 +147,7 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
     }
 
     /**
+     * 继承自HashMap的HashMapEntry类，增加了指向前后元素的引用，这是要搞双向列表节奏
      * LinkedEntry adds nxt/prv double-links to plain HashMapEntry.
      */
     static class LinkedEntry<K, V> extends HashMapEntry<K, V> {
@@ -186,6 +191,7 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
             remove(eldest.key);
         }
 
+        /** 在双向链表中增加新的元素，头部插入*/
         // Create new entry, link it on to list, and put it into table
         LinkedEntry<K, V> oldTail = header.prv;
         LinkedEntry<K, V> newTail = new LinkedEntry<K,V>(
@@ -238,6 +244,7 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
             HashMapEntry<K, V> e = entryForNullKey;
             if (e == null)
                 return null;
+            /** 如果是按照访问排序，把这个要访问的元素放到链表后面*/
             if (accessOrder)
                 makeTail((LinkedEntry<K, V>) e);
             return e.value;
@@ -254,6 +261,7 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
             K eKey = e.key;
             if (eKey == key || (e.hash == hash && key.equals(eKey))) {
                 if (accessOrder)
+                    /** 如果是按照访问排序，把这个要访问的元素放到链表后面*/
                     makeTail((LinkedEntry<K, V>) e);
                 return e.value;
             }
@@ -271,6 +279,7 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
         e.prv.nxt = e.nxt;
         e.nxt.prv = e.prv;
 
+        /** 将节点放到链表尾部，这个双向列表*/
         // Relink e as tail
         LinkedEntry<K, V> header = this.header;
         LinkedEntry<K, V> oldTail = header.prv;
@@ -280,12 +289,14 @@ public class LinkedHashMap<K, V> extends HashMap<K, V> {
         modCount++;
     }
 
+    /** value被覆盖时，如果根据访问顺序就重新放到链尾*/
     @Override void preModify(HashMapEntry<K, V> e) {
         if (accessOrder) {
             makeTail((LinkedEntry<K, V>) e);
         }
     }
 
+    /** 删除数据时，顺便把链表中对应的entry给删除掉*/
     @Override void postRemove(HashMapEntry<K, V> e) {
         LinkedEntry<K, V> le = (LinkedEntry<K, V>) e;
         le.prv.nxt = le.nxt;
