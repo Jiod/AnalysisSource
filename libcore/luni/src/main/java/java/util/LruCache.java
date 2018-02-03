@@ -76,12 +76,15 @@ public class LruCache<K, V> {
      * @param maxSize for caches that do not override {@link #sizeOf}, this is
      *     the maximum number of entries in the cache. For all other caches,
      *     this is the maximum sum of the sizes of the entries in this cache.
+     *     创建实例的时候，指定一个最大值，这个最大值是集合存储最多的数据，集合的大小是根据集合元素的大小会根据元素sizeOf返回的大小进行计算的
      */
     public LruCache(int maxSize) {
         if (maxSize <= 0) {
             throw new IllegalArgumentException("maxSize <= 0");
         }
+        /** 指定最大值*/
         this.maxSize = maxSize;
+        /** 使用LinkedHashMap保存数据，创建实例是设置accessOrder为true，LinkedHashMap可以根据access来进行排序*/
         this.map = new LinkedHashMap<K, V>(0, 0.75f, true);
     }
 
@@ -169,14 +172,17 @@ public class LruCache<K, V> {
         V previous;
         synchronized (this) {
             putCount++;
+            /** 加一下新加入的value的大小*/
             size += safeSizeOf(key, value);
             previous = map.put(key, value);
             if (previous != null) {
+                /** 如果是覆盖，就减去老的对象的大小*/
                 size -= safeSizeOf(key, previous);
             }
         }
 
         if (previous != null) {
+            /** 空实现，不用理会*/
             entryRemoved(false, key, previous, value);
         }
 
@@ -190,8 +196,10 @@ public class LruCache<K, V> {
      *
      * @param maxSize the maximum size of the cache before returning. May be -1
      *            to evict even 0-sized elements.
+     * 让集合的大小小于最大值，这个方法才是最关键，保留最近使用的对象，把最久没有使用的对象去除掉，这里重点也是利用了LinkedHashMap可以根据最近使用来进行排序
      */
     public void trimToSize(int maxSize) {
+        /** 循环删除最久没有用到的key-value,知道集合大小最大值为止*/
         while (true) {
             K key;
             V value;
@@ -201,10 +209,12 @@ public class LruCache<K, V> {
                             + ".sizeOf() is reporting inconsistent results!");
                 }
 
+                /** 如果当前大小小于最大值，就直接退出循环*/
                 if (size <= maxSize) {
                     break;
                 }
 
+                /** 找到最久没有用的key-value,然后进行删除*/
                 Map.Entry<K, V> toEvict = map.eldest();
                 if (toEvict == null) {
                     break;
