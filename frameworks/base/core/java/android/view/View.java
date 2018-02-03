@@ -517,7 +517,7 @@ import java.util.WeakHashMap;
  * The framework provides basic support for views that wish to internally
  * scroll their content. This includes keeping track of the X and Y scroll
  * offset as well as mechanisms for drawing scrollbars. See
- * {@link #scrollBy(int, int)}, {@link #scrollTo(int, int)}, and 
+ * {@link #scrollBy(int, int)}, {@link #scrollTo(int, int)}, and
  * {@link #awakenScrollBars()} for more details.
  * </p>
  *
@@ -686,11 +686,11 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      */
     static final int DISABLED = 0x00000020;
 
-   /**
-    * Mask for use with setFlags indicating bits used for indicating whether
-    * this view is enabled
-    * {@hide}
-    */
+    /**
+     * Mask for use with setFlags indicating bits used for indicating whether
+     * this view is enabled
+     * {@hide}
+     */
     static final int ENABLED_MASK = 0x00000020;
 
     /**
@@ -1117,7 +1117,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      */
     protected static final int[] ENABLED_FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET =
             stateSetUnion(ENABLED_FOCUSED_SELECTED_STATE_SET,
-                          WINDOW_FOCUSED_STATE_SET);
+                    WINDOW_FOCUSED_STATE_SET);
 
     /**
      * Indicates the view is pressed and its window has the focus.
@@ -1278,38 +1278,38 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * The order here is very important to {@link #getDrawableState()}
      */
     private static final int[][] VIEW_STATE_SETS = {
-        EMPTY_STATE_SET,                                           // 0 0 0 0 0
-        WINDOW_FOCUSED_STATE_SET,                                  // 0 0 0 0 1
-        SELECTED_STATE_SET,                                        // 0 0 0 1 0
-        SELECTED_WINDOW_FOCUSED_STATE_SET,                         // 0 0 0 1 1
-        FOCUSED_STATE_SET,                                         // 0 0 1 0 0
-        FOCUSED_WINDOW_FOCUSED_STATE_SET,                          // 0 0 1 0 1
-        FOCUSED_SELECTED_STATE_SET,                                // 0 0 1 1 0
-        FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET,                 // 0 0 1 1 1
-        ENABLED_STATE_SET,                                         // 0 1 0 0 0
-        ENABLED_WINDOW_FOCUSED_STATE_SET,                          // 0 1 0 0 1
-        ENABLED_SELECTED_STATE_SET,                                // 0 1 0 1 0
-        ENABLED_SELECTED_WINDOW_FOCUSED_STATE_SET,                 // 0 1 0 1 1
-        ENABLED_FOCUSED_STATE_SET,                                 // 0 1 1 0 0
-        ENABLED_FOCUSED_WINDOW_FOCUSED_STATE_SET,                  // 0 1 1 0 1
-        ENABLED_FOCUSED_SELECTED_STATE_SET,                        // 0 1 1 1 0
-        ENABLED_FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET,         // 0 1 1 1 1
-        PRESSED_STATE_SET,                                         // 1 0 0 0 0
-        PRESSED_WINDOW_FOCUSED_STATE_SET,                          // 1 0 0 0 1
-        PRESSED_SELECTED_STATE_SET,                                // 1 0 0 1 0
-        PRESSED_SELECTED_WINDOW_FOCUSED_STATE_SET,                 // 1 0 0 1 1
-        PRESSED_FOCUSED_STATE_SET,                                 // 1 0 1 0 0
-        PRESSED_FOCUSED_WINDOW_FOCUSED_STATE_SET,                  // 1 0 1 0 1
-        PRESSED_FOCUSED_SELECTED_STATE_SET,                        // 1 0 1 1 0
-        PRESSED_FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET,         // 1 0 1 1 1
-        PRESSED_ENABLED_STATE_SET,                                 // 1 1 0 0 0
-        PRESSED_ENABLED_WINDOW_FOCUSED_STATE_SET,                  // 1 1 0 0 1
-        PRESSED_ENABLED_SELECTED_STATE_SET,                        // 1 1 0 1 0
-        PRESSED_ENABLED_SELECTED_WINDOW_FOCUSED_STATE_SET,         // 1 1 0 1 1
-        PRESSED_ENABLED_FOCUSED_STATE_SET,                         // 1 1 1 0 0
-        PRESSED_ENABLED_FOCUSED_WINDOW_FOCUSED_STATE_SET,          // 1 1 1 0 1
-        PRESSED_ENABLED_FOCUSED_SELECTED_STATE_SET,                // 1 1 1 1 0
-        PRESSED_ENABLED_FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET, // 1 1 1 1 1
+            EMPTY_STATE_SET,                                           // 0 0 0 0 0
+            WINDOW_FOCUSED_STATE_SET,                                  // 0 0 0 0 1
+            SELECTED_STATE_SET,                                        // 0 0 0 1 0
+            SELECTED_WINDOW_FOCUSED_STATE_SET,                         // 0 0 0 1 1
+            FOCUSED_STATE_SET,                                         // 0 0 1 0 0
+            FOCUSED_WINDOW_FOCUSED_STATE_SET,                          // 0 0 1 0 1
+            FOCUSED_SELECTED_STATE_SET,                                // 0 0 1 1 0
+            FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET,                 // 0 0 1 1 1
+            ENABLED_STATE_SET,                                         // 0 1 0 0 0
+            ENABLED_WINDOW_FOCUSED_STATE_SET,                          // 0 1 0 0 1
+            ENABLED_SELECTED_STATE_SET,                                // 0 1 0 1 0
+            ENABLED_SELECTED_WINDOW_FOCUSED_STATE_SET,                 // 0 1 0 1 1
+            ENABLED_FOCUSED_STATE_SET,                                 // 0 1 1 0 0
+            ENABLED_FOCUSED_WINDOW_FOCUSED_STATE_SET,                  // 0 1 1 0 1
+            ENABLED_FOCUSED_SELECTED_STATE_SET,                        // 0 1 1 1 0
+            ENABLED_FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET,         // 0 1 1 1 1
+            PRESSED_STATE_SET,                                         // 1 0 0 0 0
+            PRESSED_WINDOW_FOCUSED_STATE_SET,                          // 1 0 0 0 1
+            PRESSED_SELECTED_STATE_SET,                                // 1 0 0 1 0
+            PRESSED_SELECTED_WINDOW_FOCUSED_STATE_SET,                 // 1 0 0 1 1
+            PRESSED_FOCUSED_STATE_SET,                                 // 1 0 1 0 0
+            PRESSED_FOCUSED_WINDOW_FOCUSED_STATE_SET,                  // 1 0 1 0 1
+            PRESSED_FOCUSED_SELECTED_STATE_SET,                        // 1 0 1 1 0
+            PRESSED_FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET,         // 1 0 1 1 1
+            PRESSED_ENABLED_STATE_SET,                                 // 1 1 0 0 0
+            PRESSED_ENABLED_WINDOW_FOCUSED_STATE_SET,                  // 1 1 0 0 1
+            PRESSED_ENABLED_SELECTED_STATE_SET,                        // 1 1 0 1 0
+            PRESSED_ENABLED_SELECTED_WINDOW_FOCUSED_STATE_SET,         // 1 1 0 1 1
+            PRESSED_ENABLED_FOCUSED_STATE_SET,                         // 1 1 1 0 0
+            PRESSED_ENABLED_FOCUSED_WINDOW_FOCUSED_STATE_SET,          // 1 1 1 0 1
+            PRESSED_ENABLED_FOCUSED_SELECTED_STATE_SET,                // 1 1 1 1 0
+            PRESSED_ENABLED_FOCUSED_SELECTED_WINDOW_FOCUSED_STATE_SET, // 1 1 1 1 1
     };
 
     /**
@@ -1525,27 +1525,27 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * @hide
      */
     static final int OPAQUE_MASK                    = 0x01800000;
-    
+
     /**
      * Indicates a prepressed state;
      * the short time between ACTION_DOWN and recognizing
      * a 'real' press. Prepressed is used to recognize quick taps
      * even when they are shorter than ViewConfiguration.getTapTimeout().
-     * 
+     *
      * @hide
      */
     private static final int PREPRESSED             = 0x02000000;
-    
+
     /**
      * Indicates whether the view is temporarily detached.
      *
      * @hide
      */
     static final int CANCEL_NEXT_UP_EVENT = 0x04000000;
-    
+
     /**
      * Indicates that we should awaken scroll bars once attached
-     * 
+     *
      * @hide
      */
     private static final int AWAKEN_SCROLL_BARS_ON_ATTACH = 0x08000000;
@@ -1601,16 +1601,16 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * {@hide}
      */
     @ViewDebug.ExportedProperty(flagMapping = {
-        @ViewDebug.FlagToString(mask = FORCE_LAYOUT, equals = FORCE_LAYOUT,
-                name = "FORCE_LAYOUT"),
-        @ViewDebug.FlagToString(mask = LAYOUT_REQUIRED, equals = LAYOUT_REQUIRED,
-                name = "LAYOUT_REQUIRED"),
-        @ViewDebug.FlagToString(mask = DRAWING_CACHE_VALID, equals = DRAWING_CACHE_VALID,
-            name = "DRAWING_CACHE_INVALID", outputIf = false),
-        @ViewDebug.FlagToString(mask = DRAWN, equals = DRAWN, name = "DRAWN", outputIf = true),
-        @ViewDebug.FlagToString(mask = DRAWN, equals = DRAWN, name = "NOT_DRAWN", outputIf = false),
-        @ViewDebug.FlagToString(mask = DIRTY_MASK, equals = DIRTY_OPAQUE, name = "DIRTY_OPAQUE"),
-        @ViewDebug.FlagToString(mask = DIRTY_MASK, equals = DIRTY, name = "DIRTY")
+            @ViewDebug.FlagToString(mask = FORCE_LAYOUT, equals = FORCE_LAYOUT,
+                    name = "FORCE_LAYOUT"),
+            @ViewDebug.FlagToString(mask = LAYOUT_REQUIRED, equals = LAYOUT_REQUIRED,
+                    name = "LAYOUT_REQUIRED"),
+            @ViewDebug.FlagToString(mask = DRAWING_CACHE_VALID, equals = DRAWING_CACHE_VALID,
+                    name = "DRAWING_CACHE_INVALID", outputIf = false),
+            @ViewDebug.FlagToString(mask = DRAWN, equals = DRAWN, name = "DRAWN", outputIf = true),
+            @ViewDebug.FlagToString(mask = DRAWN, equals = DRAWN, name = "NOT_DRAWN", outputIf = false),
+            @ViewDebug.FlagToString(mask = DIRTY_MASK, equals = DIRTY_OPAQUE, name = "DIRTY_OPAQUE"),
+            @ViewDebug.FlagToString(mask = DIRTY_MASK, equals = DIRTY, name = "DIRTY")
     })
     int mPrivateFlags;
 
@@ -1813,7 +1813,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
     private CheckForLongPress mPendingCheckForLongPress;
     private CheckForTap mPendingCheckForTap = null;
     private PerformClick mPerformClick;
-    
+
     private UnsetPressedState mUnsetPressedState;
 
     /**
@@ -1854,7 +1854,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * Special tree observer used when mAttachInfo is null.
      */
     private ViewTreeObserver mFloatingTreeObserver;
-    
+
     /**
      * Cache the touch slop from the context that created the view.
      */
@@ -1953,7 +1953,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                 case com.android.internal.R.styleable.View_padding:
                     padding = a.getDimensionPixelSize(attr, -1);
                     break;
-                 case com.android.internal.R.styleable.View_paddingLeft:
+                case com.android.internal.R.styleable.View_paddingLeft:
                     leftPadding = a.getDimensionPixelSize(attr, -1);
                     break;
                 case com.android.internal.R.styleable.View_paddingTop:
@@ -2109,7 +2109,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                     break;
                 case R.styleable.View_onClick:
                     if (context.isRestricted()) {
-                        throw new IllegalStateException("The android:onClick attribute cannot " 
+                        throw new IllegalStateException("The android:onClick attribute cannot "
                                 + "be used within a restricted context");
                     }
 
@@ -2127,7 +2127,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                                         int id = getId();
                                         String idText = id == NO_ID ? "" : " with id '"
                                                 + getContext().getResources().getResourceEntryName(
-                                                    id) + "'";
+                                                id) + "'";
                                         throw new IllegalStateException("Could not find a method " +
                                                 handlerName + "(View) in the activity "
                                                 + getContext().getClass() + " for onClick handler"
@@ -2341,19 +2341,19 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         initScrollCache();
 
         final ScrollabilityCache scrollabilityCache = mScrollCache;
-        
+
         if (scrollabilityCache.scrollBar == null) {
             scrollabilityCache.scrollBar = new ScrollBarDrawable();
         }
-        
+
         final boolean fadeScrollbars = a.getBoolean(R.styleable.View_fadeScrollbars, true);
 
         if (!fadeScrollbars) {
             scrollabilityCache.state = ScrollabilityCache.ON;
         }
         scrollabilityCache.fadeScrollBars = fadeScrollbars;
-        
-        
+
+
         scrollabilityCache.scrollBarFadeDuration = a.getInt(
                 R.styleable.View_scrollbarFadeDuration, ViewConfiguration
                         .getScrollBarFadeDuration());
@@ -2361,7 +2361,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                 R.styleable.View_scrollbarDefaultDelayBeforeFade,
                 ViewConfiguration.getScrollDefaultDelay());
 
-                
+
         scrollabilityCache.scrollBarSize = a.getDimensionPixelSize(
                 com.android.internal.R.styleable.View_scrollbarSize,
                 ViewConfiguration.get(mContext).getScaledScrollBarSize());
@@ -2741,7 +2741,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         if (mOnFocusChangeListener != null) {
             mOnFocusChangeListener.onFocusChange(this, gainFocus);
         }
-        
+
         if (mAttachInfo != null) {
             mAttachInfo.mKeyDispatchState.reset(this);
         }
@@ -3097,9 +3097,9 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * @attr ref android.R.styleable#View_visibility
      */
     @ViewDebug.ExportedProperty(mapping = {
-        @ViewDebug.IntToString(from = VISIBLE,   to = "VISIBLE"),
-        @ViewDebug.IntToString(from = INVISIBLE, to = "INVISIBLE"),
-        @ViewDebug.IntToString(from = GONE,      to = "GONE")
+            @ViewDebug.IntToString(from = VISIBLE,   to = "VISIBLE"),
+            @ViewDebug.IntToString(from = INVISIBLE, to = "INVISIBLE"),
+            @ViewDebug.IntToString(from = GONE,      to = "GONE")
     })
     public int getVisibility() {
         return mViewFlags & VISIBILITY_MASK;
@@ -3736,10 +3736,10 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         if (isInTouchMode()) {
             View root = getRootView();
             if (root != null) {
-               ViewRoot viewRoot = (ViewRoot)root.getParent();
-               if (viewRoot != null) {
-                   viewRoot.ensureTouchMode(false);
-               }
+                ViewRoot viewRoot = (ViewRoot)root.getParent();
+                if (viewRoot != null) {
+                    viewRoot.ensureTouchMode(false);
+                }
             }
         }
         return requestFocus(View.FOCUS_DOWN);
@@ -3814,7 +3814,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
     public KeyEvent.DispatcherState getKeyDispatcherState() {
         return mAttachInfo != null ? mAttachInfo.mKeyDispatchState : null;
     }
-    
+
     /**
      * Dispatch a key event before it is processed by any input method
      * associated with the view hierarchy.  This can be used to intercept
@@ -3878,6 +3878,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
             return false;
         }
 
+        /** 如果有touchListener就调用touchListener的onTouch方法，如果返回true就不调用自己的onTouchEvent方法了，也就是onTouch优先级大于onTouchEvent **/
         if (mOnTouchListener != null && (mViewFlags & ENABLED_MASK) == ENABLED &&
                 mOnTouchListener.onTouch(this, event)) {
             return true;
@@ -3890,7 +3891,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      *
      * @param event The motion event to be filtered.
      * @return True if the event should be dispatched, false if the event should be dropped.
-     * 
+     *
      * @see #getFilterTouchesWhenObscured
      */
     public boolean onFilterTouchEventForSecurity(MotionEvent event) {
@@ -3995,7 +3996,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * a View moves out of the screen, it might receives a display hint indicating
      * the view is not displayed. Applications should not <em>rely</em> on this hint
      * as there is no guarantee that they will receive one.
-     * 
+     *
      * @param hint A hint about whether or not this view is displayed:
      * {@link #VISIBLE} or {@link #INVISIBLE}.
      */
@@ -4008,7 +4009,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * a View moves out of the screen, it might receives a display hint indicating
      * the view is not displayed. Applications should not <em>rely</em> on this hint
      * as there is no guarantee that they will receive one.
-     * 
+     *
      * @param hint A hint about whether or not this view is displayed:
      * {@link #VISIBLE} or {@link #INVISIBLE}.
      */
@@ -4457,6 +4458,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                                 if (mPerformClick == null) {
                                     mPerformClick = new PerformClick();
                                 }
+                                /** 这里处理点击事件，优先级最低 **/
                                 if (!post(mPerformClick)) {
                                     performClick();
                                 }
@@ -4527,10 +4529,10 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      */
     private void removeLongPressCallback() {
         if (mPendingCheckForLongPress != null) {
-          removeCallbacks(mPendingCheckForLongPress);
+            removeCallbacks(mPendingCheckForLongPress);
         }
     }
-    
+
     /**
      * Remove the prepress detection timer.
      */
@@ -5085,7 +5087,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * provides animated scrolling, the start delay should equal the duration of
      * the scrolling animation.
      * </p>
-     * 
+     *
      * <p>
      * The animation starts only if at least one of the scrollbars is enabled,
      * as specified by {@link #isHorizontalScrollBarEnabled()} and
@@ -5094,17 +5096,17 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * started, this method calls {@link #invalidate()}; in that case the caller
      * should not call {@link #invalidate()}.
      * </p>
-     * 
+     *
      * <p>
      * This method should be invoked everytime a subclass directly updates the
      * scroll parameters.
      * </p>
-     * 
+     *
      * @param startDelay the delay, in milliseconds, after which the animation
      *        should start; when the delay is 0, the animation starts
      *        immediately
      * @return true if the animation is played, false otherwise
-     * 
+     *
      * @see #scrollBy(int, int)
      * @see #scrollTo(int, int)
      * @see #isHorizontalScrollBarEnabled()
@@ -5115,7 +5117,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
     protected boolean awakenScrollBars(int startDelay) {
         return awakenScrollBars(startDelay, true);
     }
-        
+
     /**
      * <p>
      * Trigger the scrollbars to draw. When invoked this method starts an
@@ -5123,30 +5125,30 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * provides animated scrolling, the start delay should equal the duration of
      * the scrolling animation.
      * </p>
-     * 
+     *
      * <p>
      * The animation starts only if at least one of the scrollbars is enabled,
      * as specified by {@link #isHorizontalScrollBarEnabled()} and
      * {@link #isVerticalScrollBarEnabled()}. When the animation is started,
      * this method returns true, and false otherwise. If the animation is
-     * started, this method calls {@link #invalidate()} if the invalidate parameter 
+     * started, this method calls {@link #invalidate()} if the invalidate parameter
      * is set to true; in that case the caller
      * should not call {@link #invalidate()}.
      * </p>
-     * 
+     *
      * <p>
      * This method should be invoked everytime a subclass directly updates the
      * scroll parameters.
      * </p>
-     * 
+     *
      * @param startDelay the delay, in milliseconds, after which the animation
      *        should start; when the delay is 0, the animation starts
      *        immediately
-     * 
+     *
      * @param invalidate Wheter this method should call invalidate
-     * 
+     *
      * @return true if the animation is played, false otherwise
-     * 
+     *
      * @see #scrollBy(int, int)
      * @see #scrollTo(int, int)
      * @see #isHorizontalScrollBarEnabled()
@@ -5156,7 +5158,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      */
     protected boolean awakenScrollBars(int startDelay, boolean invalidate) {
         final ScrollabilityCache scrollCache = mScrollCache;
-        
+
         if (scrollCache == null || !scrollCache.fadeScrollBars) {
             return false;
         }
@@ -5468,7 +5470,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * @param bottom The bottom coordinate of the rectangle to invalidate.
      */
     public void postInvalidateDelayed(long delayMilliseconds, int left, int top,
-            int right, int bottom) {
+                                      int right, int bottom) {
 
         // We try only with the AttachInfo because there's no point in invalidating
         // if we are not attached to our window
@@ -5687,12 +5689,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
     private void recomputePadding() {
         setPadding(mPaddingLeft, mPaddingTop, mUserPaddingRight, mUserPaddingBottom);
     }
-    
+
     /**
      * Define whether scrollbars will fade when the view is not scrolling.
-     * 
+     *
      * @param fadeScrollbars wheter to enable fading
-     * 
+     *
      */
     public void setScrollbarFadingEnabled(boolean fadeScrollbars) {
         initScrollCache();
@@ -5704,17 +5706,17 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
             scrollabilityCache.state = ScrollabilityCache.ON;
         }
     }
-    
+
     /**
-     * 
+     *
      * Returns true if scrollbars will fade when this view is not scrolling
-     * 
+     *
      * @return true if scrollbar fading is enabled
      */
     public boolean isScrollbarFadingEnabled() {
-        return mScrollCache != null && mScrollCache.fadeScrollBars; 
+        return mScrollCache != null && mScrollCache.fadeScrollBars;
     }
-    
+
     /**
      * <p>Specify the style of the scrollbars. The scrollbars can be overlaid or
      * inset. When inset, they add to the padding of the view. And the scrollbars
@@ -5881,30 +5883,30 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * scrollbars are painted only if they have been awakened first.</p>
      *
      * @param canvas the canvas on which to draw the scrollbars
-     * 
+     *
      * @see #awakenScrollBars(int)
      */
     protected final void onDrawScrollBars(Canvas canvas) {
         // scrollbars are drawn only when the animation is running
         final ScrollabilityCache cache = mScrollCache;
         if (cache != null) {
-            
+
             int state = cache.state;
-            
+
             if (state == ScrollabilityCache.OFF) {
                 return;
             }
-            
+
             boolean invalidate = false;
-            
+
             if (state == ScrollabilityCache.FADING) {
                 // We're fading -- get our fade interpolation
                 if (cache.interpolatorValues == null) {
                     cache.interpolatorValues = new float[1];
                 }
-                
+
                 float[] values = cache.interpolatorValues;
-                
+
                 // Stops the animation if we're done
                 if (cache.scrollBarInterpolator.timeToValues(values) ==
                         Interpolator.Result.FREEZE_END) {
@@ -5912,8 +5914,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                 } else {
                     cache.scrollBar.setAlpha(Math.round(values[0]));
                 }
-                
-                // This will make the scroll bars inval themselves after 
+
+                // This will make the scroll bars inval themselves after
                 // drawing. We only want this when we're fading so that
                 // we prevent excessive redraws
                 invalidate = true;
@@ -5923,14 +5925,14 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                 cache.scrollBar.setAlpha(255);
             }
 
-            
+
             final int viewFlags = mViewFlags;
 
             final boolean drawHorizontalScrollBar =
-                (viewFlags & SCROLLBARS_HORIZONTAL) == SCROLLBARS_HORIZONTAL;
+                    (viewFlags & SCROLLBARS_HORIZONTAL) == SCROLLBARS_HORIZONTAL;
             final boolean drawVerticalScrollBar =
-                (viewFlags & SCROLLBARS_VERTICAL) == SCROLLBARS_VERTICAL
-                && !isVerticalScrollBarHidden();
+                    (viewFlags & SCROLLBARS_VERTICAL) == SCROLLBARS_VERTICAL
+                            && !isVerticalScrollBarHidden();
 
             if (drawVerticalScrollBar || drawHorizontalScrollBar) {
                 final int width = mRight - mLeft;
@@ -5947,14 +5949,14 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                 final int inside = (viewFlags & SCROLLBARS_OUTSIDE_MASK) == 0 ? ~0 : 0;
 
                 int left, top, right, bottom;
-                
+
                 if (drawHorizontalScrollBar) {
                     scrollBar.setParameters(computeHorizontalScrollRange(),
-                                            computeHorizontalScrollOffset(),
-                                            computeHorizontalScrollExtent(), false);
+                            computeHorizontalScrollOffset(),
+                            computeHorizontalScrollExtent(), false);
                     final int verticalScrollBarGap = drawVerticalScrollBar ?
                             getVerticalScrollbarWidth() : 0;
-                    top = scrollY + height - size - (mUserPaddingBottom & inside);                         
+                    top = scrollY + height - size - (mUserPaddingBottom & inside);
                     left = scrollX + (mPaddingLeft & inside);
                     right = scrollX + width - (mUserPaddingRight & inside) - verticalScrollBarGap;
                     bottom = top + size;
@@ -5966,8 +5968,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
 
                 if (drawVerticalScrollBar) {
                     scrollBar.setParameters(computeVerticalScrollRange(),
-                                            computeVerticalScrollOffset(),
-                                            computeVerticalScrollExtent(), true);
+                            computeVerticalScrollOffset(),
+                            computeVerticalScrollExtent(), true);
                     // TODO: Deal with RTL languages to position scrollbar on left
                     left = scrollX + width - size - (mUserPaddingRight & inside);
                     top = scrollY + (mPaddingTop & inside);
@@ -6301,8 +6303,8 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         if (state != BaseSavedState.EMPTY_STATE && state != null) {
             throw new IllegalArgumentException("Wrong state class, expecting View State but "
                     + "received " + state.getClass().toString() + " instead. This usually happens "
-                    + "when two views of different type have the same id in the same hierarchy. " 
-                    + "This view's id is " + ViewDebug.resolveId(mContext, getId()) + ". Make sure " 
+                    + "when two views of different type have the same id in the same hierarchy. "
+                    + "This view's id is " + ViewDebug.resolveId(mContext, getId()) + ". Make sure "
                     + "other views do not use the same id.");
         }
     }
@@ -6384,9 +6386,9 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
 
     /**
      * <p>Calling this method is equivalent to calling <code>getDrawingCache(false)</code>.</p>
-     * 
+     *
      * @return A non-scaled bitmap representing this view or null if cache is disabled.
-     * 
+     *
      * @see #getDrawingCache(boolean)
      */
     public Bitmap getDrawingCache() {
@@ -6400,7 +6402,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * draw from the cache when the cache is enabled. To benefit from the cache, you must
      * request the drawing cache by calling this method and draw it on screen if the
      * returned bitmap is not null.</p>
-     * 
+     *
      * <p>Note about auto scaling in compatibility mode: When auto scaling is not enabled,
      * this method will create a bitmap of the same size as this view. Because this bitmap
      * will be drawn scaled by the parent ViewGroup, the result on screen might show
@@ -6408,13 +6410,13 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * the auto scaling to true. Doing so, however, will generate a bitmap of a different
      * size than the view. This implies that your application must be able to handle this
      * size.</p>
-     * 
+     *
      * @param autoScale Indicates whether the generated bitmap should be scaled based on
      *        the current density of the screen when the application is in compatibility
      *        mode.
      *
      * @return A bitmap representing this view or null if cache is disabled.
-     * 
+     *
      * @see #setDrawingCacheEnabled(boolean)
      * @see #isDrawingCacheEnabled()
      * @see #buildDrawingCache(boolean)
@@ -6483,7 +6485,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
 
     /**
      * <p>Calling this method is equivalent to calling <code>buildDrawingCache(false)</code>.</p>
-     * 
+     *
      * @see #buildDrawingCache(boolean)
      */
     public void buildDrawingCache() {
@@ -6496,7 +6498,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * <p>If you call {@link #buildDrawingCache()} manually without calling
      * {@link #setDrawingCacheEnabled(boolean) setDrawingCacheEnabled(true)}, you
      * should cleanup the cache by calling {@link #destroyDrawingCache()} afterwards.</p>
-     * 
+     *
      * <p>Note about auto scaling in compatibility mode: When auto scaling is not enabled,
      * this method will create a bitmap of the same size as this view. Because this bitmap
      * will be drawn scaled by the parent ViewGroup, the result on screen might show
@@ -6536,7 +6538,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
             final boolean use32BitCache = attachInfo != null && attachInfo.mUse32BitDrawingCache;
 
             if (width <= 0 || height <= 0 ||
-                     // Projected bitmap size in bytes
+                    // Projected bitmap size in bytes
                     (width * height * (opaque && !use32BitCache ? 2 : 4) >
                             ViewConfiguration.get(mContext).getScaledMaximumDrawingCacheSize())) {
                 destroyDrawingCache();
@@ -6620,12 +6622,12 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
 
             computeScroll();
             final int restoreCount = canvas.save();
-            
+
             if (autoScale && scalingRequired) {
                 final float scale = attachInfo.mApplicationScale;
                 canvas.scale(scale, scale);
             }
-            
+
             canvas.translate(-mScrollX, -mScrollY);
 
             mPrivateFlags |= DRAWN;
@@ -6663,14 +6665,14 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         final float scale = attachInfo != null ? attachInfo.mApplicationScale : 1.0f;
         width = (int) ((width * scale) + 0.5f);
         height = (int) ((height * scale) + 0.5f);
-        
+
         Bitmap bitmap = Bitmap.createBitmap(width > 0 ? width : 1, height > 0 ? height : 1, quality);
         if (bitmap == null) {
             throw new OutOfMemoryError();
         }
 
         bitmap.setDensity(getResources().getDisplayMetrics().densityDpi);
-        
+
         Canvas canvas;
         if (attachInfo != null) {
             canvas = attachInfo.mCanvas;
@@ -7058,22 +7060,22 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         }
 
         switch (flags & VISIBILITY_MASK) {
-        case INVISIBLE:
-            if (numFlags > 0) {
-                output += " ";
-            }
-            output += "INVISIBLE";
-            // USELESS HERE numFlags++;
-            break;
-        case GONE:
-            if (numFlags > 0) {
-                output += " ";
-            }
-            output += "GONE";
-            // USELESS HERE numFlags++;
-            break;
-        default:
-            break;
+            case INVISIBLE:
+                if (numFlags > 0) {
+                    output += " ";
+                }
+                output += "INVISIBLE";
+                // USELESS HERE numFlags++;
+                break;
+            case GONE:
+                if (numFlags > 0) {
+                    output += " ";
+                }
+                output += "GONE";
+                // USELESS HERE numFlags++;
+                break;
+            default:
+                break;
         }
         return output;
     }
@@ -8406,15 +8408,15 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize =  MeasureSpec.getSize(measureSpec);
         switch (specMode) {
-        case MeasureSpec.UNSPECIFIED:
-            result = size;
-            break;
-        case MeasureSpec.AT_MOST:
-            result = Math.min(size, specSize);
-            break;
-        case MeasureSpec.EXACTLY:
-            result = specSize;
-            break;
+            case MeasureSpec.UNSPECIFIED:
+                result = size;
+                break;
+            case MeasureSpec.AT_MOST:
+                result = Math.min(size, specSize);
+                break;
+            case MeasureSpec.EXACTLY:
+                result = specSize;
+                break;
         }
         return result;
     }
@@ -8434,13 +8436,13 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         int specSize =  MeasureSpec.getSize(measureSpec);
 
         switch (specMode) {
-        case MeasureSpec.UNSPECIFIED:
-            result = size;
-            break;
-        case MeasureSpec.AT_MOST:
-        case MeasureSpec.EXACTLY:
-            result = specSize;
-            break;
+            case MeasureSpec.UNSPECIFIED:
+                result = size;
+                break;
+            case MeasureSpec.AT_MOST:
+            case MeasureSpec.EXACTLY:
+                result = specSize;
+                break;
         }
         return result;
     }
@@ -8706,7 +8708,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      */
     public void onCloseSystemDialogs(String reason) {
     }
-    
+
     /**
      * Given a Drawable whose bounds have been set to draw into this view,
      * update a Region being computed for {@link #gatherTransparentRegion} so
@@ -8830,10 +8832,10 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      *          axis, false otherwise.
      */
     protected boolean overScrollBy(int deltaX, int deltaY,
-            int scrollX, int scrollY,
-            int scrollRangeX, int scrollRangeY,
-            int maxOverScrollX, int maxOverScrollY,
-            boolean isTouchEvent) {
+                                   int scrollX, int scrollY,
+                                   int scrollRangeX, int scrollRangeY,
+                                   int maxOverScrollX, int maxOverScrollY,
+                                   boolean isTouchEvent) {
         final int overScrollMode = mOverScrollMode;
         final boolean canScrollHorizontal =
                 computeHorizontalScrollRange() > computeHorizontalScrollExtent();
@@ -8893,7 +8895,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * @param clampedY True if scrollY was clamped to an over-scroll boundary
      */
     protected void onOverScrolled(int scrollX, int scrollY,
-            boolean clampedX, boolean clampedY) {
+                                  boolean clampedX, boolean clampedY) {
         // Intentionally empty.
     }
 
@@ -9063,7 +9065,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
             mOriginalWindowAttachCount = mWindowAttachCount;
         }
     }
-    
+
     private final class CheckForTap implements Runnable {
         public void run() {
             mPrivateFlags &= ~PREPRESSED;
@@ -9207,14 +9209,14 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
 
         public static final Parcelable.Creator<BaseSavedState> CREATOR =
                 new Parcelable.Creator<BaseSavedState>() {
-            public BaseSavedState createFromParcel(Parcel in) {
-                return new BaseSavedState(in);
-            }
+                    public BaseSavedState createFromParcel(Parcel in) {
+                        return new BaseSavedState(in);
+                    }
 
-            public BaseSavedState[] newArray(int size) {
-                return new BaseSavedState[size];
-            }
-        };
+                    public BaseSavedState[] newArray(int size) {
+                        return new BaseSavedState[size];
+                    }
+                };
     }
 
     /**
@@ -9458,7 +9460,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
          * @param handler the events handler the view must use
          */
         AttachInfo(IWindowSession session, IWindow window,
-                Handler handler, Callbacks effectPlayer) {
+                   Handler handler, Callbacks effectPlayer) {
             mSession = session;
             mWindow = window;
             mWindowToken = window.asBinder();
@@ -9473,7 +9475,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
      * instances of View.</p>
      */
     private static class ScrollabilityCache implements Runnable {
-                
+
         /**
          * Scrollbars are not visible
          */
@@ -9490,7 +9492,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
         public static final int FADING = 2;
 
         public boolean fadeScrollBars;
-        
+
         public int fadingEdgeLength;
         public int scrollBarDefaultDelayBeforeFade;
         public int scrollBarFadeDuration;
@@ -9508,7 +9510,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
 
         private final float[] mOpaque = {255.0f};
         private final float[] mTransparent = {0.0f};
-        
+
         /**
          * When fading should start. This time moves into the future every time
          * a new scroll happens. Measured based on SystemClock.uptimeMillis()
@@ -9553,7 +9555,7 @@ public class View implements Drawable.Callback, KeyEvent.Callback, Accessibility
                 paint.setXfermode(null);
             }
         }
-        
+
         public void run() {
             long now = AnimationUtils.currentAnimationTimeMillis();
             if (now >= fadeStartTime) {
