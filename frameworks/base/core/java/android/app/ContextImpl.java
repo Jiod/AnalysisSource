@@ -339,30 +339,40 @@ class ContextImpl extends Context {
         return makeFilename(getPreferencesDir(), name + ".xml");
     }
 
+    /**
+     * Activity中的getSharedPrefereces方法最终是执行到到这个方法
+     */
     @Override
     public SharedPreferences getSharedPreferences(String name, int mode) {
         SharedPreferencesImpl sp;
         File prefsFile;
         boolean needInitialLoad = false;
         synchronized (sSharedPrefs) {
+            /**  sSharedPrefs是一个类属性，进程生命后期是整个进程，进程所有加载的SharedPreferences都是放在这个Map中*/
             sp = sSharedPrefs.get(name);
             if (sp != null && !sp.hasFileChangedUnexpectedly()) {
+                /** 如果已经加载过这个SharedPreferences就直接返回*/
                 return sp;
             }
 
+            /** 根据名字获取SharedPreferences对应的文件名称,路径：data/data/package_name/shared_prefs/{name}.xml*/
             prefsFile = getSharedPrefsFile(name);
             if (sp == null) {
+                /** 构建一个实例SharedPreferencesImpl，并放入到sSharedPrefs中*/
                 sp = new SharedPreferencesImpl(prefsFile, mode, null);
                 sSharedPrefs.put(name, sp);
+                /** 进行初始化标志*/
                 needInitialLoad = true;
             }
         }
 
         synchronized (sp) {
+            /** 如果已经加载初始化了，就直接返回sp*/
             if (needInitialLoad && sp.isLoaded()) {
                 // lost the race to load; another thread handled it
                 return sp;
             }
+            /** 为啥要这样，我暂时没有看出来*/
             File backup = makeBackupFile(prefsFile);
             if (backup.exists()) {
                 prefsFile.delete();
@@ -379,6 +389,7 @@ class ContextImpl extends Context {
             if (FileUtils.getFileStatus(prefsFile.getPath(), stat) && prefsFile.canRead()) {
                 try {
                     FileInputStream str = new FileInputStream(prefsFile);
+                    /** 加载初始化，读取xml文件，解析返回一个Map */
                     map = XmlUtils.readMapXml(str);
                     str.close();
                 } catch (org.xmlpull.v1.XmlPullParserException e) {
@@ -389,6 +400,7 @@ class ContextImpl extends Context {
                     Log.w(TAG, "getSharedPreferences", e);
                 }
             }
+            /** map集合替换*/
             sp.replace(map, stat);
         }
         return sp;
@@ -2754,6 +2766,15 @@ class ContextImpl extends Context {
     // ----------------------------------------------------------------------
     // ----------------------------------------------------------------------
 
+    /**
+     强烈建议不要在sp里面存储特别大的key/value, 有助于减少卡顿/anr
+     请不要高频地使用apply, 尽可能地批量提交;commit直接在主线程操作, 更要注意了
+     不要使用MODE_MULTI_PROCESS;
+     高频写操作的key与高频读操作的key可以适当地拆分文件, 由于减少同步锁竞争;
+     不要一上来就执行getSharedPreferences().edit(), 应该分成两大步骤来做, 中间可以执行其他代码.
+     不要连续多次edit(), 应该获取一次获取edit(),然后多次执行putxxx(), 减少内存波动; 经常看到大家喜欢封装方法, 结果就导致这种情况的出现.
+     每次commit时会把全部的数据更新的文件, 所以整个文件是不应该过大的, 影响整体性能;
+     */
     private static final class SharedPreferencesImpl implements SharedPreferences {
 
         // Lock ordering rules:
@@ -2774,6 +2795,10 @@ class ContextImpl extends Context {
         private static final Object mContent = new Object();
         private final WeakHashMap<OnSharedPreferenceChangeListener, Object> mListeners;
 
+        /** SharedPreferencesImpl称实例化并没有做什么内容，并没有在这里加载数据到内存中；
+         * 在高版本中，构造方法中还会新起一个线程进行初始化操作，就是把文件中的内容加载进来
+         * 转化成map，而不是在外部进行初始化，这样做更为合理
+         * */
         SharedPreferencesImpl(
             File file, int mode, Map initialContents) {
             mFile = file;
@@ -2846,6 +2871,10 @@ class ContextImpl extends Context {
             }
         }
 
+        /**
+         * SharedPerences中的get方法都是使用了synchronized，其实就是为了防止没有加载完就开始使用
+         * 导致出现异常
+         */
         public String getString(String key, String defValue) {
             synchronized (this) {
                 String v = (String)mMap.get(key);
@@ -2903,10 +2932,15 @@ class ContextImpl extends Context {
             }
         }
 
+        /**
+         * 调用SharedPreferences中的editor方法，返回这个类的实例
+         */
         public final class EditorImpl implements Editor {
+            /** 提交的内容都放在这里，这里可以认为是脏数据，调用apply或者commit进行提交*/
             private final Map<String, Object> mModified = Maps.newHashMap();
             private boolean mClear = false;
 
+            /** EditorImpl中的putXXX方法都是往mModified属性中添加键值对，后面调用apply或者commit进行提交*/
             public Editor putString(String key, String value) {
                 synchronized (this) {
                     mModified.put(key, value);
@@ -2952,7 +2986,9 @@ class ContextImpl extends Context {
                 }
             }
 
+            /** 异步提交保存数据*/
             public void apply() {
+                /** 第一步提交到内存*/
                 final MemoryCommitResult mcr = commitToMemory();
                 final Runnable awaitCommit = new Runnable() {
                         public void run() {
@@ -3045,6 +3081,12 @@ class ContextImpl extends Context {
                 return mcr;
             }
 
+            /**
+             * 这个方法和apply类似
+             * apply没有返回值，commit有返回值可以知道是否保存成功
+             * apply同步提交到内存，然后异步提交到文件，commit是同步提交到内存和文件
+             * apply
+             */
             public boolean commit() {
                 MemoryCommitResult mcr = commitToMemory();
                 SharedPreferencesImpl.this.enqueueDiskWrite(
@@ -3104,11 +3146,13 @@ class ContextImpl extends Context {
             final Runnable writeToDiskRunnable = new Runnable() {
                     public void run() {
                         synchronized (mWritingToDiskLock) {
+                            /** 写入到文件*/
                             writeToFile(mcr);
                         }
                         synchronized (SharedPreferencesImpl.this) {
                             mDiskWritesInFlight--;
                         }
+                        /** apply方法调用这里非空，会调用run方法*/
                         if (postWriteRunnable != null) {
                             postWriteRunnable.run();
                         }
@@ -3119,17 +3163,23 @@ class ContextImpl extends Context {
 
             // Typical #commit() path with fewer allocations, doing a write on
             // the current thread.
+            /**
+             * 如果是commit调用则isFromSyncCommit为true，会直接同步执行writeToDiskRunnable的方法
+             * 这是和apply的主要区别
+             */
             if (isFromSyncCommit) {
                 boolean wasEmpty = false;
                 synchronized (SharedPreferencesImpl.this) {
                     wasEmpty = mDiskWritesInFlight == 1;
                 }
                 if (wasEmpty) {
+                    /** 同步执行run方法*/
                     writeToDiskRunnable.run();
                     return;
                 }
             }
 
+            /** 提交异步执行*/
             QueuedWork.singleThreadExecutor().execute(writeToDiskRunnable);
         }
 
@@ -3160,6 +3210,7 @@ class ContextImpl extends Context {
         private void writeToFile(MemoryCommitResult mcr) {
             // Rename the current file so it may be used as a backup during the next read
             if (mFile.exists()) {
+                /** 如果没有改变就唤醒等待线程，返回*/
                 if (!mcr.changesMade) {
                     // If the file already exists, but no changes were
                     // made to the underlying map, it's wasteful to
@@ -3168,6 +3219,7 @@ class ContextImpl extends Context {
                     mcr.setDiskWriteResult(true);
                     return;
                 }
+
                 if (!mBackupFile.exists()) {
                     if (!mFile.renameTo(mBackupFile)) {
                         Log.e(TAG, "Couldn't rename file " + mFile
@@ -3189,6 +3241,7 @@ class ContextImpl extends Context {
                     mcr.setDiskWriteResult(false);
                     return;
                 }
+                /** 将数据写入到文件中*/
                 XmlUtils.writeMapXml(mcr.mapToWriteToDisk, str);
                 FileUtils.sync(str);
                 str.close();
