@@ -89,6 +89,7 @@ public class Handler {
      */
     public void dispatchMessage(Message msg) {
         if (msg.callback != null) {
+            /** 调用post(Runnable)中的Runnable的run方法*/
             handleCallback(msg);
         } else {
             if (mCallback != null) {
@@ -96,6 +97,7 @@ public class Handler {
                     return;
                 }
             }
+            /** 处理消息，具体的Handler的覆盖的方法*/
             handleMessage(msg);
         }
     }
@@ -103,6 +105,10 @@ public class Handler {
     /**
      * Default constructor associates this handler with the queue for the
      * current thread.
+     *
+     * If there isn't one, this handler won't be able to receive messages.
+     * 默认构造方法，方法内将会通过Looper.myLooper()方法获取Looper实例，如果为空就会抛出异常
+     * 所以在创建Handler对象前要当前线程中通过Looper.prepare()方法创建一个Looper实例
      */
     public Handler() {
         if (FIND_POTENTIAL_LEAKS) {
@@ -114,11 +120,14 @@ public class Handler {
             }
         }
 
+        /** 获取当前线程中的Looper实例*/
         mLooper = Looper.myLooper();
+        /** 当前线程没有Looper对象就抛出异常*/
         if (mLooper == null) {
             throw new RuntimeException(
                 "Can't create handler inside thread that has not called Looper.prepare()");
         }
+        /** 把mLooper中的mQueue属性赋值给Handler的mQueue属性*/
         mQueue = mLooper.mQueue;
         mCallback = null;
     }
@@ -419,12 +428,15 @@ public class Handler {
      *         result of true does not mean the message will be processed -- if
      *         the looper is quit before the delivery time of the message
      *         occurs then the message will be dropped.
+     *
+     *  Handler中的postXXX\sendXXX最终都会执行到这个方法
      */
     public final boolean sendMessageDelayed(Message msg, long delayMillis)
     {
         if (delayMillis < 0) {
             delayMillis = 0;
         }
+        /** 把Message放到MessageQueue队列中*/
         return sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);
     }
 
@@ -452,6 +464,7 @@ public class Handler {
         MessageQueue queue = mQueue;
         if (queue != null) {
             msg.target = this;
+            /** message放到队列中*/
             sent = queue.enqueueMessage(msg, uptimeMillis);
         }
         else {

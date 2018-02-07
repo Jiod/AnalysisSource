@@ -210,6 +210,7 @@ public class MessageQueue {
                 needWake = mBlocked; // new head, might need to wake up
             } else {
                 Message prev = null;
+                /** 插入到合适的位置*/
                 while (p != null && p.when <= when) {
                     prev = p;
                     p = p.next;

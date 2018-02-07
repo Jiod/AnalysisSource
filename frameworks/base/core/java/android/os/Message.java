@@ -94,6 +94,8 @@ public final class Message implements Parcelable {
     /**
      * Return a new Message instance from the global pool. Allows us to
      * avoid allocating new objects in many cases.
+     *
+     * 从缓存链表中获取一个Message，如果链表中不存在就重新创建一个，从头部取出
      */
     public static Message obtain() {
         synchronized (mPoolSync) {
@@ -235,13 +237,20 @@ public final class Message implements Parcelable {
      * Return a Message instance to the global pool.  You MUST NOT touch
      * the Message after calling this function -- it has effectively been
      * freed.
+     *
+     * 这个方法对已经调用了dispathMessage方法的Message进行回收，可以供下次使用，避免重复创建Message对象
+     * 使用的是链表的数据结构来进行存储的，头部插入法
      */
     public void recycle() {
         synchronized (mPoolSync) {
+            /** 如果没有超过最大缓存数量，就把当前对象加入到缓存中*/
             if (mPoolSize < MAX_POOL_SIZE) {
+                /** 清空数据，保证当前对象和新建的Message一样*/
                 clearForRecycle();
-                
+
+                /** next指针指向当前缓存链表头部*/
                 next = mPool;
+                /** 设置头指针*/
                 mPool = this;
             }
         }

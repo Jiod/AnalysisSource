@@ -119,6 +119,7 @@ public class Looper {
             //    break;
             //}
             if (msg != null) {
+                /** 如果target为空，就认为是一个退出消息，退出这个while循环，方法结束，可以看下Looper.quit()方法*/
                 if (msg.target == null) {
                     // No target is a magic identifier for the quit message.
                     return;
@@ -127,6 +128,7 @@ public class Looper {
                         ">>>>> Dispatching to " + msg.target + " "
                         + msg.callback + ": " + msg.what
                         );
+                /** 调用msg对应的handler的dispatchMessage方法*/
                 msg.target.dispatchMessage(msg);
                 if (me.mLogging!= null) me.mLogging.println(
                         "<<<<< Finished to    " + msg.target + " "
@@ -142,7 +144,8 @@ public class Looper {
                             + msg.target.getClass().getName() + " "
                             + msg.callback + " what=" + msg.what);
                 }
-                
+
+                /** 回收重新利用*/
                 msg.recycle();
             }
         }
