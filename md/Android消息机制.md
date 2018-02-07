@@ -1,6 +1,7 @@
 ## Android消息机制
 
 Android消息机制，代码就不详细分析，都在提交的记录里面，这里简单介绍一下流程
+
 1、在目标线程中通过Looper.prepare()方法创建Looper实例，创建Looper实例过程创建MessageQueue
 
 2、调用Looper.loop()方法，不断的从MessageQueue取Message处理
@@ -16,9 +17,11 @@ Android消息机制，代码就不详细分析，都在提交的记录里面，�
 7、Handler.dispatchMessage()方法调用handleMessage或者handleCallback方法
 
 详细可以参考另外一文章
+
 [Android 消息处理机制（Looper、Handler、MessageQueue,Message）](https://www.jianshu.com/p/02962454adf7)
 
 放出两张图
+
 ![](https://upload-images.jianshu.io/upload_images/966283-3e81643b7e2604ef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700)
 
 ![](https://upload-images.jianshu.io/upload_images/966283-bd9c24f19114108a.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/700)
