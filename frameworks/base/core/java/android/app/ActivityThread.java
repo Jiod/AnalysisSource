@@ -1069,6 +1069,7 @@ public final class ActivityThread {
                         (a.activity != null ? a.activity.mFinished : false));
                     if (a.activity != null && !a.activity.mFinished) {
                         try {
+                            // 调用ActivityManagerService的ActivityIdle方法
                             am.activityIdle(a.token, a.createdConfig);
                             a.createdConfig = null;
                         } catch (RemoteException ex) {
@@ -2221,6 +2222,7 @@ public final class ActivityThread {
             mNewActivities = r;
             if (localLOGV) Slog.v(
                 TAG, "Scheduling idle handler for " + r);
+            // Activity的onStop就是从这里出发调用的
             Looper.myQueue().addIdleHandler(new Idler());
 
         } else {
@@ -2434,6 +2436,7 @@ public final class ActivityThread {
             if (!keepShown) {
                 try {
                     // Now we are idle.
+                    // 调用stop方法
                     r.activity.performStop();
                 } catch (Exception e) {
                     if (!mInstrumentation.onException(r.activity, e)) {
@@ -2482,6 +2485,7 @@ public final class ActivityThread {
         r.activity.mConfigChangeFlags |= configChanges;
 
         StopInfo info = new StopInfo();
+        // stopActivityInner
         performStopActivityInner(r, info, show);
 
         if (localLOGV) Slog.v(

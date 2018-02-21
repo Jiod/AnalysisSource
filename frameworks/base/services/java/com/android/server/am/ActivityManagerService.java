@@ -3659,6 +3659,7 @@ public final class ActivityManagerService extends ActivityManagerNative
 
     public final void activityIdle(IBinder token, Configuration config) {
         final long origId = Binder.clearCallingIdentity();
+        // ActiivtyStack#activityIdleInternal方法
         mMainStack.activityIdleInternal(token, false, config);
         Binder.restoreCallingIdentity(origId);
     }

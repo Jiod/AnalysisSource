@@ -2654,6 +2654,7 @@ public class ActivityStack {
                 if (!r.visible) {
                     mService.mWindowManager.setAppVisibility(r, false);
                 }
+                // 调用ApplicationThread#scheduleStopActivity方法
                 r.app.thread.scheduleStopActivity(r, r.visible, r.configChangeFlags);
             } catch (Exception e) {
                 // Maybe just ignore exceptions here...  if the process
@@ -2820,6 +2821,7 @@ public class ActivityStack {
                 if (r.finishing) {
                     finishCurrentActivityLocked(r, FINISH_IMMEDIATELY);
                 } else {
+                    // 继续
                     stopActivityLocked(r);
                 }
             }
