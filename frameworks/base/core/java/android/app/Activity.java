@@ -2824,6 +2824,7 @@ public class Activity extends ContextThemeWrapper
      */
     public void startActivityForResult(Intent intent, int requestCode) {
         if (mParent == null) {
+            // 1、调用的startActivity方法都会执行到这里，调用Instrumentation的execStartActivity方法启动Activity
             Instrumentation.ActivityResult ar =
                 mInstrumentation.execStartActivity(
                     this, mMainThread.getApplicationThread(), mToken, this,

@@ -510,6 +510,7 @@ public class ActivityStack {
                 mService.mHomeProcess = app;
             }
             mService.ensurePackageDexOpt(r.intent.getComponent().getPackageName());
+            // 调用ApplicationThread中的scheduleLaunchActivity方法创建Activity实例，并调用onCreate方法
             app.thread.scheduleLaunchActivity(new Intent(r.intent), r,
                     System.identityHashCode(r),
                     r.info, r.icicle, results, newIntents, !andResume,
@@ -605,9 +606,11 @@ public class ActivityStack {
         } else if (mInitialStartTime == 0) {
             mInitialStartTime = SystemClock.uptimeMillis();
         }
-        
+
+        // 线程已经存在了，就直接启动Activity，如果不存在就继续调用ServiceManagerService中的startProcessLocked方法启动新进程
         if (app != null && app.thread != null) {
             try {
+                // 启动新的Activity
                 realStartActivityLocked(r, app, andResume, checkConfig);
                 return;
             } catch (RemoteException e) {
@@ -619,6 +622,7 @@ public class ActivityStack {
             // restart the application.
         }
 
+        // 启动新的进程
         mService.startProcessLocked(r.processName, r.info.applicationInfo, true, 0,
                 "activity", r.intent.getComponent(), false);
     }
@@ -672,6 +676,7 @@ public class ActivityStack {
                 EventLog.writeEvent(EventLogTags.AM_PAUSE_ACTIVITY,
                         System.identityHashCode(prev),
                         prev.shortComponentName);
+                // 调用ApplicationThread的schedulePauseActivity方法
                 prev.app.thread.schedulePauseActivity(prev, prev.finishing, userLeaving,
                         prev.configChangeFlags);
                 if (mMainStack) {
@@ -744,6 +749,7 @@ public class ActivityStack {
                 mHandler.removeMessages(PAUSE_TIMEOUT_MSG, r);
                 if (mPausingActivity == r) {
                     r.state = ActivityState.PAUSED;
+                    // 继续调用completePauseLocked方法
                     completePauseLocked();
                 } else {
                     EventLog.writeEvent(EventLogTags.AM_FAILED_TO_PAUSE,
@@ -795,6 +801,7 @@ public class ActivityStack {
                 if (DEBUG_PAUSE) Slog.v(TAG, "App died during pause, not stopping: " + prev);
                 prev = null;
             }
+            // 这里置空，后面调用resumeTopActivityLocked方法是，会继续执行startSpecificActivityLocked
             mPausingActivity = null;
         }
 
@@ -1134,6 +1141,7 @@ public class ActivityStack {
         // can be resumed...
         if (mResumedActivity != null) {
             if (DEBUG_SWITCH) Slog.v(TAG, "Skip resume: need to start pausing");
+            // 5、调用当前的Activity的onPause方法
             startPausingLocked(userLeaving, false);
             return true;
         }
@@ -1304,6 +1312,7 @@ public class ActivityStack {
                                 next.labelRes, next.icon, null, true);
                     }
                 }
+                // 启动新的Activity，并且调用resume方法
                 startSpecificActivityLocked(next, true, false);
                 return true;
             }
@@ -2402,6 +2411,7 @@ public class ActivityStack {
         // Collect information about the target of the Intent.
         ActivityInfo aInfo;
         try {
+            // 看看有没有匹配的信息
             ResolveInfo rInfo =
                 AppGlobals.getPackageManager().resolveIntent(
                         intent, resolvedType,
@@ -2512,7 +2522,8 @@ public class ActivityStack {
                     }
                 }
             }
-            
+
+            // 4、调用startActivityLocked方法
             int res = startActivityLocked(caller, intent, resolvedType,
                     grantedUriPermissions, grantedMode, aInfo,
                     resultTo, resultWho, requestCode, callingPid, callingUid,
