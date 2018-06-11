@@ -409,7 +409,13 @@ public final class ActivityThread {
 
         // we use token to identify this activity without having to send the
         // activity itself back to the activity manager. (matters more with ipc)
+        /**********************************************************************************************/
+        /**********************************************************************************************/
+
         // 由ActivityStack#realStartActivityLocked方法调用
+
+        /**********************************************************************************************/
+        /**********************************************************************************************/
         public final void scheduleLaunchActivity(Intent intent, IBinder token, int ident,
                 ActivityInfo info, Bundle state, List<ResultInfo> pendingResults,
                 List<Intent> pendingNewIntents, boolean notResumed, boolean isForward) {
@@ -1069,7 +1075,14 @@ public final class ActivityThread {
                         (a.activity != null ? a.activity.mFinished : false));
                     if (a.activity != null && !a.activity.mFinished) {
                         try {
-                            // 调用ActivityManagerService的ActivityIdle方法
+
+                            /**********************************************************************************************/
+                            /**********************************************************************************************/
+
+                            /** 调用ActivityManagerService的ActivityIdle方法 */
+
+                            /**********************************************************************************************/
+                            /**********************************************************************************************/
                             am.activityIdle(a.token, a.createdConfig);
                             a.createdConfig = null;
                         } catch (RemoteException ex) {
@@ -1593,7 +1606,13 @@ public final class ActivityThread {
                 Configuration config = new Configuration(mConfiguration);
                 if (DEBUG_CONFIGURATION) Slog.v(TAG, "Launching activity "
                         + r.activityInfo.name + " with config " + config);
-                // 为Activity中的context等赋值
+                /**********************************************************************************************/
+                /**********************************************************************************************/
+
+                /*** 为Activity中的context等赋值 ***/
+
+                /**********************************************************************************************/
+                /**********************************************************************************************/
                 activity.attach(appContext, this, getInstrumentation(), r.token,
                         r.ident, app, r.intent, r.activityInfo, title, r.parent,
                         r.embeddedID, r.lastNonConfigurationInstance,
@@ -1611,7 +1630,13 @@ public final class ActivityThread {
                 }
 
                 activity.mCalled = false;
+                /**********************************************************************************************/
+                /**********************************************************************************************/
+
                 // 调用Activity的onCreate方法
+
+                /**********************************************************************************************/
+                /**********************************************************************************************/
                 mInstrumentation.callActivityOnCreate(activity, r.state);
                 if (!activity.mCalled) {
                     throw new SuperNotCalledException(
@@ -1621,13 +1646,25 @@ public final class ActivityThread {
                 r.activity = activity;
                 r.stopped = true;
                 if (!r.activity.mFinished) {
-                    // 调用start方法
+                    /**********************************************************************************************/
+                    /**********************************************************************************************/
+
+                    /** 调用start方法 **/
+
+                    /**********************************************************************************************/
+                    /**********************************************************************************************/
                     activity.performStart();
                     r.stopped = false;
                 }
                 if (!r.activity.mFinished) {
                     if (r.state != null) {
-                        // 调用OnRestoreInstanceState方法
+                        /**********************************************************************************************/
+                        /**********************************************************************************************/
+
+                        /** 调用OnRestoreInstanceState方法 */
+
+                        /**********************************************************************************************/
+                        /**********************************************************************************************/
                         mInstrumentation.callActivityOnRestoreInstanceState(activity, r.state);
                     }
                 }
@@ -1666,11 +1703,23 @@ public final class ActivityThread {
 
         if (localLOGV) Slog.v(
             TAG, "Handling launch of " + r);
+
+        /**********************************************************************************************/
+        /**********************************************************************************************/
+
+        /**
+         * 创建Activity实例，调用onCreate，onStart方法
+         */
+
+        /**********************************************************************************************/
+        /**********************************************************************************************/
         Activity a = performLaunchActivity(r, customIntent);
 
         if (a != null) {
             r.createdConfig = new Configuration(mConfiguration);
             Bundle oldState = r.state;
+
+            // onResume方法
             handleResumeActivity(r.token, false, r.isForward);
 
             if (!r.activity.mFinished && r.startsNotResumed) {
@@ -2113,7 +2162,14 @@ public final class ActivityThread {
                     deliverResults(r, r.pendingResults);
                     r.pendingResults = null;
                 }
-                // 调用onResume方法
+
+                /**********************************************************************************************/
+                /**********************************************************************************************/
+
+                /**  调用onResume方法 */
+
+                /**********************************************************************************************/
+                /**********************************************************************************************/
                 r.activity.performResume();
 
                 EventLog.writeEvent(LOG_ON_RESUME_CALLED,
@@ -2222,7 +2278,14 @@ public final class ActivityThread {
             mNewActivities = r;
             if (localLOGV) Slog.v(
                 TAG, "Scheduling idle handler for " + r);
-            // Activity的onStop就是从这里出发调用的
+
+            /**********************************************************************************************/
+            /**********************************************************************************************/
+
+            /**** Activity的onStop就是从这里出发调用的***/
+
+            /**********************************************************************************************/
+            /**********************************************************************************************/
             Looper.myQueue().addIdleHandler(new Idler());
 
         } else {
@@ -2296,7 +2359,15 @@ public final class ActivityThread {
             }
 
             r.activity.mConfigChangeFlags |= configChanges;
-            // 调用Activity的onPause方法
+            /**********************************************************************************************/
+            /**********************************************************************************************/
+
+            /**
+             * 调用Activity的onPause方法
+             */
+
+            /**********************************************************************************************/
+            /**********************************************************************************************/
             Bundle state = performPauseActivity(token, finished, true);
 
             // Make sure any pending writes are now committed.
@@ -2304,7 +2375,13 @@ public final class ActivityThread {
             
             // Tell the activity manager we have paused.
             try {
-                // 通知已经调用onPause方法完毕
+                /**********************************************************************************************/
+                /**********************************************************************************************/
+
+                /** 通知已经调用onPause方法完毕 */
+
+                /**********************************************************************************************/
+                /**********************************************************************************************/
                 ActivityManagerNative.getDefault().activityPaused(token, state);
             } catch (RemoteException ex) {
             }
@@ -2342,14 +2419,30 @@ public final class ActivityThread {
         try {
             // Next have the activity save its current state and managed dialogs...
             if (!r.activity.mFinished && saveState) {
-                // onSaveInstance参数中的bundle在此，包括后面在onCreate方法中传递的Bundle参数
+                /**********************************************************************************************/
+                /**********************************************************************************************/
+
+                /**
+                 *  onSaveInstance参数中的bundle在此，包括后面在onCreate方法中传递的Bundle参数
+                 */
+
+                /**********************************************************************************************/
+                /**********************************************************************************************/
                 state = new Bundle();
                 mInstrumentation.callActivityOnSaveInstanceState(r.activity, state);
                 r.state = state;
             }
             // Now we are idle.
             r.activity.mCalled = false;
-            // 通过Instrumention调用Activity的onPuase方法
+            /**********************************************************************************************/
+            /**********************************************************************************************/
+
+            /**
+             * 通过Instrumention调用Activity的onPuase方法
+             */
+
+            /**********************************************************************************************/
+            /**********************************************************************************************/
             mInstrumentation.callActivityOnPause(r.activity);
             EventLog.writeEvent(LOG_ON_PAUSE_CALLED, r.activity.getComponentName().getClassName());
             if (!r.activity.mCalled) {

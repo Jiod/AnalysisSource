@@ -2078,7 +2078,15 @@ public final class ActivityManagerService extends ActivityManagerNative
             int grantedMode, IBinder resultTo,
             String resultWho, int requestCode, boolean onlyIfNeeded,
             boolean debug) {
-        // 3、直接调用ActivityStack中的startActivityMayWait方法启动
+        /**********************************************************************************************/
+        /**********************************************************************************************/
+
+        /**
+         * 3、直接调用ActivityStack中的startActivityMayWait方法启动
+         */
+
+        /**********************************************************************************************/
+        /**********************************************************************************************/
         return mMainStack.startActivityMayWait(caller, intent, resolvedType,
                 grantedUriPermissions, grantedMode, resultTo, resultWho,
                 requestCode, onlyIfNeeded, debug, null, null);
@@ -3744,7 +3752,15 @@ public final class ActivityManagerService extends ActivityManagerNative
         }
 
         final long origId = Binder.clearCallingIdentity();
-        // 调用ActivityStack的activityPaused方法
+        /**********************************************************************************************/
+        /**********************************************************************************************/
+
+        /**
+         * 调用ActivityStack的activityPaused方法
+         */
+
+        /**********************************************************************************************/
+        /**********************************************************************************************/
         mMainStack.activityPaused(token, icicle, false);
         Binder.restoreCallingIdentity(origId);
     }

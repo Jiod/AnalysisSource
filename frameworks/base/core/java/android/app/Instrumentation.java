@@ -1371,8 +1371,16 @@ public class Instrumentation {
             }
         }
         try {
-            // 2、调用ActivityManagerService中的startActivity方法，ActivityManagerNative.getDefault(),这个方法其实返回的是ActivityManagerProxy实例，这个就是个代理，
-            // 远程调用ActivityManagerSerice实例方法
+            /**********************************************************************************************/
+            /**********************************************************************************************/
+
+            /**
+             * 2、调用ActivityManagerService中的startActivity方法，ActivityManagerNative.getDefault(),这个方
+             *    法其实返回的是ActivityManagerProxy实例，这个就是个代理，远程调用ActivityManagerSerice实例方法
+             */
+
+            /**********************************************************************************************/
+            /**********************************************************************************************/
             int result = ActivityManagerNative.getDefault()
                 .startActivity(whoThread, intent,
                         intent.resolveTypeIfNeeded(who.getContentResolver()),
